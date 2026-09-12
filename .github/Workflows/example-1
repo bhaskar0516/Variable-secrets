@@ -13,9 +13,7 @@ jobs:
       - name: Docker build
         run: docker build -t ${{ env.container_registry }}/${{ vars.dockerusername }}/${{ env.image_name }}:latest .
 
-      - name: Docker credentails
-        env:
-          docker_password: Docker@516  
+      - name: Docker credentails  
         run: docker login --username=${{ vars.dockerusername }} --password=${{ secrets.docker_password }}
 
       - name: Docker login
