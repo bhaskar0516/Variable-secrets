@@ -1,4 +1,4 @@
-name: Env variables for docker without secrets
+name: Secrets provided to variables
 on: push
 env:
     container_registry: docker.io
