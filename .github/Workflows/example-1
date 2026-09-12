@@ -1,0 +1,30 @@
+name: Env variables for docker without secrets
+on: push
+env:
+    container_registry: docker.io
+    image_name: nginx16
+jobs:
+  build-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: artifacts
+        uses: actions/checkout@v4
+
+      - name: Docker build
+        run: docker build -t ${{ env.container_registry }}/${{ vars.dockerusername }}/${{ env.image_name }}:latest .
+
+      - name: Docker credentails
+        env:
+          docker_password: Docker@516  
+        run: docker login --username=${{ vars.dockerusername }} --password=${{ secrets.docker_password }}
+
+      - name: Docker login
+        run: docker push ${{ vars.dockerusername }}/${{ env.image_name }}:latest
+
+  deploy-job:
+    needs: build-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker deploy
+        run: docker run -d -p 8080:80 ${{ vars.dockerusername }}/${{ env.image_name }}:latest
+      
