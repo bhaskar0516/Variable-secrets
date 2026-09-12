@@ -13,10 +13,10 @@ jobs:
       - name: Docker build
         run: docker build -t ${{ env.container_registry }}/${{ vars.dockerusername }}/${{ env.image_name }}:latest .
 
-      - name: Docker credentails  
+      - name: Docker access 
         run: docker login --username=${{ vars.dockerusername }} --password=${{ secrets.docker_password }}
 
-      - name: Docker login
+      - name: Docker login 
         run: docker push ${{ vars.dockerusername }}/${{ env.image_name }}:latest
 
   deploy-job:
