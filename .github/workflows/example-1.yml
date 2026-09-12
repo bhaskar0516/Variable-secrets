@@ -11,18 +11,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Docker build
-        run: docker build -t ${{ env.container_registry }}/${{ vars.dockerusername }}/$image_name:latest .
+        run: docker build -t ${{ env.container_registry }}/${{ vars.dockerusername }}/${{ env.image_name }}:latest .
 
       - name: Docker credentails  
         run: docker login --username=${{ vars.dockerusername }} --password=${{ secrets.docker_password }}
 
       - name: Docker login
-        run: docker push ${{ vars.dockerusername }}/$image_name:latest
+        run: docker push ${{ vars.dockerusername }}/${{ env.image_name }}:latest
 
   deploy-job:
     needs: build-job
     runs-on: ubuntu-latest
     steps:
       - name: Docker deploy
-        run: docker run -d -p 8080:80 ${{ vars.dockerusername }}/$image_name:latest
+        run: docker run -d -p 8080:80 ${{ vars.dockerusername }}/${{ env.image_name }}:latest
       
